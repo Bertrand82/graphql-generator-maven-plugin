@@ -36,9 +36,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "generateSpring", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateSpringMojo extends AbstractMojo {
 
-
-	
-
 	@Parameter(property = "msg", defaultValue = "from maven")
 	protected String msg = "";
 
@@ -49,26 +46,24 @@ public class GenerateSpringMojo extends AbstractMojo {
 	protected File dirGeneratedModel = new File("generated11");
 
 	@Parameter
-	File dirSrcGeneratedSpring = new File("generated33");
+	protected File dirSrcGeneratedSpring = new File("generated33");
 
-	/**
-	 * Location of the file.
-	 * 
-	 * @parameter expression="${project.build.directory}"
-	 * @required
-	 */
-	private File outputDirectory;
-
+	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
-			// String pathGraphQL = "/schema/schema.graphqls";
-			msg += " pathGraphQL " + pathGraphQL + " dirGeneratedModel " + dirGeneratedModel.getName()
-					+ " dirSrcGeneratedSpring " + dirSrcGeneratedSpring.getName();
-			// GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,		dirGeneratedModel, dirSrcGeneratedSpring);
+			trace();
+				// GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,		dirGeneratedModel, dirSrcGeneratedSpring);
 		} catch (Exception e) {
 			throw new MojoExecutionException(msg, e);
 		}
+	}
+
+	private void trace() {
+		getLog().info( "GenerateGraphTool pathGraphQ :"+this.pathGraphQL);
+		getLog().info( "GenerateGraphTool dirGeneratedModel :"+this.dirGeneratedModel);
+		getLog().info( "GenerateGraphTool dirSrcGeneratedSpring :"+this.dirSrcGeneratedSpring);
+		
 	}
 
 	protected void cleanDirectory(File dir) {
