@@ -55,18 +55,21 @@ public class GenerateSpringMojo extends AbstractMojo {
 
 	private File dirTarget;
 	private File dirGeneratedSources;
+	private File dirTargetClasses;
 	
 	private File dirSrcGeneratedModel;
 	
 	private File dirSrcGeneratedSpring;
+	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
 			init();
 			
 			GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,
-					dirSrcGeneratedModel, dirSrcGeneratedSpring);
+					dirSrcGeneratedModel, dirSrcGeneratedSpring,dirTargetClasses);
 		} catch (Exception e) {
+			getLog().error("Mojo Error : ",e);
 			throw new MojoExecutionException(msg, e);
 		}
 	}
@@ -74,6 +77,7 @@ public class GenerateSpringMojo extends AbstractMojo {
 	private void init() {
 		this.dirTarget= new File(mavenProject.getBuild().getDirectory());
 		this.dirGeneratedSources = new File(dirTarget,"generated-sources");
+		this.dirTargetClasses = new File(dirTarget,"classes");
 		this.dirSrcGeneratedModel= new File(dirGeneratedSources,this.dirSrcGeneratedModelPath);
 		this.dirSrcGeneratedSpring= new File(dirGeneratedSources,this.dirSrcGeneratedSpringPath);
 		trace();
