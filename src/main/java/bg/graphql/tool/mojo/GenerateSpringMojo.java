@@ -24,9 +24,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 import bg.graphql.tool.GenerateModelRepositoryControllerFromGraphQL;
-
 
 /**
  * Goal which touches a timestamp file.
@@ -38,33 +38,55 @@ import bg.graphql.tool.GenerateModelRepositoryControllerFromGraphQL;
 @Mojo(name = "generateSpring", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class GenerateSpringMojo extends AbstractMojo {
 
+	@Parameter(property = "project")
+	private MavenProject mavenProject;
+
 	@Parameter(property = "msg", defaultValue = "from maven")
 	protected String msg = "";
 
 	@Parameter(property = "pathGraphQL", defaultValue = "/schema/schema.graphqls")
 	protected String pathGraphQL;
 
-	@Parameter
-	protected File dirGeneratedModel = new File("generated11");
+	@Parameter(property = "dirSrcGeneratedModel", defaultValue = "generated111")
+	protected String dirSrcGeneratedModelPath ;
 
-	@Parameter
-	protected File dirSrcGeneratedSpring = new File("generated33");
+	@Parameter(property = "dirSrcGeneratedSpring", defaultValue = "generated222")
+	protected String dirSrcGeneratedSpringPath;
 
+	private File dirTarget;
+	private File dirGeneratedSources;
 	
+	private File dirSrcGeneratedModel;
+	
+	private File dirSrcGeneratedSpring;
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
-			trace();
-				 GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,		dirGeneratedModel, dirSrcGeneratedSpring);
+			init();
+			
+			GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,
+					dirSrcGeneratedModel, dirSrcGeneratedSpring);
 		} catch (Exception e) {
 			throw new MojoExecutionException(msg, e);
 		}
 	}
 
+	private void init() {
+		this.dirTarget= new File(mavenProject.getBuild().getDirectory());
+		this.dirGeneratedSources = new File(dirTarget,"generated-sources");
+		this.dirSrcGeneratedModel= new File(dirGeneratedSources,this.dirSrcGeneratedModelPath);
+		this.dirSrcGeneratedSpring= new File(dirGeneratedSources,this.dirSrcGeneratedSpringPath);
+		trace();
+	}
+
 	private void trace() {
-		getLog().info( "GenerateGraphTool pathGraphQ :"+this.pathGraphQL);
-		getLog().info( "GenerateGraphTool dirGeneratedModel :"+this.dirGeneratedModel);
-		getLog().info( "GenerateGraphTool dirSrcGeneratedSpring :"+this.dirSrcGeneratedSpring);
+		getLog().info("-----------------------------------------------");
+		getLog().info("MAvenProject baseDir :"+mavenProject.getBasedir().getPath());
+		getLog().info("MAvenProject build Directory :"+mavenProject.getBuild().getDirectory());
+		getLog().info("GenerateGraphTool pathGraphQ :" + this.pathGraphQL);
+		getLog().info("GenerateGraphTool dirGeneratedModel :" + this.dirSrcGeneratedModel.getPath());
+		getLog().info("GenerateGraphTool dirSrcGeneratedSpring :" + this.dirSrcGeneratedSpring.getPath());
+		getLog().info("-----------------------------------------------");
 		
 	}
 
