@@ -1,4 +1,4 @@
-package bg.graphql.tool;
+package bg.graphql.tool.mojo;
 
 import java.io.File;
 
@@ -24,6 +24,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+
+import bg.graphql.tool.GenerateModelRepositoryControllerFromGraphQL;
 
 
 /**
@@ -53,7 +55,7 @@ public class GenerateSpringMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		try {
 			trace();
-				// GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,		dirGeneratedModel, dirSrcGeneratedSpring);
+				 GenerateModelRepositoryControllerFromGraphQL.processGenerationFullFromGraphQl(pathGraphQL,		dirGeneratedModel, dirSrcGeneratedSpring);
 		} catch (Exception e) {
 			throw new MojoExecutionException(msg, e);
 		}
