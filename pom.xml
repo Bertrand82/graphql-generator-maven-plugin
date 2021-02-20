@@ -50,14 +50,16 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.6.0</version>
 				<configuration>
-
-					<outputDirectory>target/dir</outputDirectory>
-
-					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-					<extractors>
-						<!-- Important . Il ne faut pas mettre d'extractor. Sinon il recherche les mojos dans toutes les dependances-->
-						<extractor></extractor>
-					</extractors>
+				<!-- Important . -->
+				<!--Maven scans all classpath for Mojo annotations. and occur an  strange "Unsupported class file 
+							major version" not relevant -->
+				<!-- To reduce the span of scan, set mojoDependencies as below -->
+					<mojoDependencies>
+						<param>bg.graphql.tool:graphql-generator-maven-plugin</param>
+					</mojoDependencies>
+					<!-- <outputDirectory>target/dir</outputDirectory>
+					 --><skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+					
 				</configuration>
 
 			</plugin>
