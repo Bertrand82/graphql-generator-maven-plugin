@@ -32,6 +32,20 @@
 			<artifactId>graphql-generator</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.maven/sonar-maven-plugin -->
+		<dependency>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>3.8.0.2131</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 	<build>
@@ -50,16 +64,17 @@
 				<artifactId>maven-plugin-plugin</artifactId>
 				<version>3.6.0</version>
 				<configuration>
-				<!-- Important . -->
-				<!--Maven scans all classpath for Mojo annotations. and occur an  strange "Unsupported class file 
-							major version" not relevant -->
-				<!-- To reduce the span of scan, set mojoDependencies as below -->
 					<mojoDependencies>
+						<!-- Important . -->
+						<!--Maven scans all classpath for Mojo annotations.It occurs 
+							an strange "Unsupported class file major version" irrelevant -->
+						<!-- To reduce the span of scan, set mojoDependencies as below -->
+						<!-- It should be the default value (Only the current project provide the 
+							Mojo! ) -->
 						<param>bg.graphql.tool:graphql-generator-maven-plugin</param>
 					</mojoDependencies>
-					<!-- <outputDirectory>target/dir</outputDirectory>
-					 --><skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-					
+					<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+
 				</configuration>
 
 			</plugin>
